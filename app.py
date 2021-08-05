@@ -4,6 +4,9 @@ import glob, os
 import colorama
 import struct
 from Crypto.Cipher import AES
+from subprocess import popen
+from sys import executable
+from pywii.Alameda import Alameda
 colorama.init()
 app = Flask(__name__)
 
@@ -23,9 +26,13 @@ def generate_listings():
             click.echo(click.style(f"Creating listing for titles/{file}", fg="green"))
         else:
             click.echo(click.style(f"{colorama.ansi.AnsiCursor.UP(1)}Creating listing for titles/{file}", fg="green"), nl=False)
-        with open(file, "rb") as f:
-            pass
-
+        # Now we summon the almighty PyWii
+        os.mkdir("temp")
+        popen([executable, "pywii/pywii/pywii-tools/wadunpack.py", file, "temp"])
+        banner = Alameda("temp/00000000.app") # 00000000.app always exists in a WAD and is always the banner.
+        # Now we get the title name
+        title_name = banner.imet.Names[0].decode("utf-8")
+        print(title_name)
             
 
 
