@@ -36,8 +36,8 @@ def generate_listings():
                 filename = file
         banner = Alameda.Alameda(filename) # 00000000.app always exists in a WAD and is always the banner.
         # Now we get the title name
-        title_name = banner.imet.Names[1].decode("utf-8")
-        print(title_name)
+        title_name = banner.imet.Names[1]
+        
             
 
 
