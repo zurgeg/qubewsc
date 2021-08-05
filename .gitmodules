@@ -1,0 +1,3 @@
+[submodule "pywii"]
+	path = pywii
+	url = https://github.com/zurgeg/pywii
