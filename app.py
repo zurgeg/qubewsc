@@ -28,7 +28,7 @@ def generate_listings():
             click.echo(click.style(f"{colorama.ansi.AnsiCursor.UP(1)}Creating listing for titles/{file}", fg="green"), nl=False)
         # Now we summon the almighty PyWii
         os.mkdir("temp")
-        subprocess.popen([executable, "pywii/pywii/pywii-tools/wadunpack.py", file, "temp"])
+        subprocess.Popen([executable, "pywii/pywii/pywii-tools/wadunpack.py", file, "temp"])
         banner = Alameda("temp/00000000.app") # 00000000.app always exists in a WAD and is always the banner.
         # Now we get the title name
         title_name = banner.imet.Names[0].decode("utf-8")
