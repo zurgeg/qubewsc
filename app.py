@@ -7,6 +7,7 @@ from Crypto.Cipher import AES
 import subprocess
 from sys import executable
 from pywii.Alameda import Alameda
+from pywii.extractwad import extractwad
 colorama.init()
 app = Flask(__name__)
 
@@ -27,11 +28,15 @@ def generate_listings():
         else:
             click.echo(click.style(f"{colorama.ansi.AnsiCursor.UP(1)}Creating listing for titles/{file}", fg="green"), nl=False)
         # Now we summon the almighty PyWii
-        os.mkdir("temp")
-        subprocess.Popen([executable, "pywii/pywii/pywii-tools/wadunpack.py", file, "temp"])
-        banner = Alameda("temp/00000000.app") # 00000000.app always exists in a WAD and is always the banner.
+        extractwad(file, "temp")
+        os.chdir("temp")
+        for file in glob.glob("*"):
+            if not file in ["certs", "cetk", "footer", "tmd"] and not file.startswith("0000000"):
+                # Looks like it's the banner
+                filename = file
+        banner = Alameda.Alameda(filename) # 00000000.app always exists in a WAD and is always the banner.
         # Now we get the title name
-        title_name = banner.imet.Names[0].decode("utf-8")
+        title_name = banner.imet.Names[1].decode("utf-8")
         print(title_name)
             
 
