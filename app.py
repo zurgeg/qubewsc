@@ -27,7 +27,7 @@ def generate_listings():
             is_first = False
             click.echo(click.style(f"Creating listing for titles/{file}", fg="green"))
         else:
-            click.echo(click.style(f"{colorama.ansi.AnsiCursor.UP(1)}Creating listing for titles/{file}", fg="green"), nl=False)
+            click.echo(click.style(f"{colorama.Cursor.UP(1)}\rCreating listing for titles/{file}", fg="green"), nl=False)
         # Now we summon the almighty PyWii
         extractwad(file, "temp")
         os.chdir("temp")
@@ -41,9 +41,10 @@ def generate_listings():
         output[file] = {
             "name": title_name
         } # TODO: What other stuff should we put in here?
-        os.chdir("../../") # Take us back to the main folder
+        os.chdir("../") # Take us back to the main folder
+    os.chdir("../")
     json.dump(output, open("titles/tdb.json", "w"))
-    click.echo(click.style("Successfully generated listings!", bold=True, fg="green"))
+    click.echo(click.style("\nSuccessfully generated listings!", bold=True, fg="green"))
         
 def generate_title_html(title: str, wad: str):
     """
