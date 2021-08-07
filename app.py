@@ -41,7 +41,7 @@ def generate_listings():
         output[file] = {
             "name": title_name
         } # TODO: What other stuff should we put in here?
-    os.chdir("../../") # Take us back to the main folder
+        os.chdir("../../") # Take us back to the main folder
     json.dump(output, open("titles/tdb.json", "w"))
     click.echo(click.style("Successfully generated listings!", bold=True, fg="green"))
         
