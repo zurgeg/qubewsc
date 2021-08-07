@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import click
 import glob, os
 import colorama
@@ -45,7 +45,30 @@ def generate_listings():
     json.dump(output, open("titles/tdb.json", "w"))
     click.echo(click.style("Successfully generated listings!", bold=True, fg="green"))
         
-            
+def generate_title_html(title: str, wad: str):
+    """
+    Generates HTML for a given title and WAD
+    """
+    return f"""
+<div class="qubetitle">
+    <a href="/tinf/{wad}">{title}</a>
+</div>
+    """
+
+def generate_all_titles_html():
+    titles = json.load(open("titles/tdb.json"))
+    for wad in titles.keys():
+        yield generate_title_html(titles[wad]["name"], wad)
+
+@app.route("/")
+def home():
+    titles = list(generate_all_titles_html())
+    return render_template("wiititlelist.html.jinja", titles=titles)
+
+@cli.command()
+def run_debug_server():
+    global app
+    app.run(debug=True)
 
 
 
